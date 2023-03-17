@@ -10,14 +10,18 @@ export default function Navbar() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </div>
-                <div className="pr-8 md:block hidden">
+                <div className="pr-8 md:block hidden w-[50%] text-right">
                     <a href="/" className="p-4 font-semibold text-xl">Contact Us</a>
                     <a href="/" className="p-4 font-semibold text-xl">Feedback</a>
                     <a href="/" className="p-4 font-semibold text-xl">API</a>
                 </div>
-
-                {/* <div className="pr-0">
-                </div> */}
+                <div className="pr-24 flex  gap-2">
+                    <img src={Pfp} className="w-16" />
+                    <span className="flex flex-col ">
+                        <h2 className="font-semibold text-md pt-2">Jayna Mukesh</h2>
+                        <p className="text-blue-700 text-sm">@jayna</p>
+                    </span>
+                </div>
             </nav>
         </>
     )
