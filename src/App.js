@@ -1,16 +1,21 @@
 import './App.css';
 import Navbar from './components/nav';
+import { Button } from "@nextui-org/react";
 function App() {
   return (
     <div>
       <Navbar />
-      <div className='w-screen h-screen grid grid-cols-2'>
+      <div className='h-[100dvh] grid grid-cols-2'>
         <div>
-          <div className='text-2xl font-bold'>
-            <h1>RewordMe - Sentence Rephraser AI</h1>
-            <p className='text-sm'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet mi eros, eget lacinia massa pulvinar in. Sed luctus est sit amet volutpat dictum.</p>
+          <div className='mx-8 flex pb-48 justify-center flex-col h-[100%]'>
+            <h1 className="text-[30px] font-bold text-[#18113D]">RewordMe - Sentence Rephraser AI</h1>
+            <span className='text-[15px] pt-4 font-bold text-[#4F4F4F]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet mi eros, eget lacinia massa pulvinar in. Sed luctus est sit amet volutpat dictum.</span>
+            <div>
+              <Button className='mt-6' color={"secondary"} shadow>TRY IT OUT</Button>
+            </div>
           </div>
         </div>
+
         <div></div>
       </div>
     </div>
