@@ -16,7 +16,10 @@ function App() {
           </div>
         </div>
 
-        <div></div>
+        <div>
+          <div className='flex items-center justify-center h-48'>Try it for free</div>
+          <div className=''><textarea className='drop-shadow-md resize-none' placeholder='Type something...' rows={5}></textarea></div>
+        </div>
       </div>
     </div>
   );
