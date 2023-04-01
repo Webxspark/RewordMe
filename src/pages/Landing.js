@@ -89,7 +89,7 @@ const Landing = () => {
                 </div>
 
                 <div>
-                    <div className="lg:my-24 my-12 lg:mx-12 mx-2 flex items-center justify-center flex-col bg-[#f6f5fa] py-10 w-auto px-4 rounded-lg">
+                    <div className="lg:my-24 my-12 lg:mx-12 mx-2 flex items-center justify-center flex-col bg-[#f6f5fa] py-10 w-auto px-4 lg:px-10 rounded-lg">
                         <div className='font-semibold text-lg text-[#4F4F4F] flex items-center gap-3'>
                             <FaArrowDown />
                             Try it for free
