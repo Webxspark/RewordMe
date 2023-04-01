@@ -4,12 +4,11 @@ require_once 'auth.php';
 $Auth = new Auth;
 $data = [];
 //user signup system
-if (isset($_REQUEST['signup']) && isset($_REQUEST['email']) && isset($_REQUEST['password'])) {
+if (isset($_REQUEST['signup']) && isset($_REQUEST['email']) && isset($_REQUEST['password']) && isset($_REQUEST['username'])) {
     if (!$Auth->isLoggedIn()) {
         $email = htmlspecialchars($_REQUEST['email']);
         //generate username with email
-        $username = explode('@', $email);
-        $username = $username[0];
+        $username = htmlspecialchars($_REQUEST['username']);
         $password = htmlspecialchars($_REQUEST['password']);
         $password = password_hash($password, PASSWORD_DEFAULT);
         $credits = 20;
@@ -30,13 +29,13 @@ if (isset($_REQUEST['signup']) && isset($_REQUEST['email']) && isset($_REQUEST['
                 ];
                 $_SESSION['__auth'] = $data['context']['content']['key'];
             } else {
-                $data['error'] = "Something went wrong. Please try again later!";
+                $data['message'] = "Something went wrong. Please try again later!";
             }
         } else {
             $data['message'] = "Account already exists. Please login to continue!";
         }
     } else {
-        $data['error'] = "You're already logged in!";
+        $data['message'] = "You're already logged in!";
     }
 }
 //user login system
@@ -64,13 +63,13 @@ if (isset($_REQUEST['login']) && isset($_REQUEST['email']) && isset($_REQUEST['p
                 ];
                 $_SESSION['__auth'] = $data['context']['content']['key'];
             } else {
-                $data['error'] = "Access denied. Invalid credentials!";
+                $data['message'] = "Access denied. Invalid credentials!";
             }
         } else {
-            $data['error'] = "No account exists. Please create a new account!";
+            $data['message'] = "No account exists. Please create a new account!";
         }
     } else {
-        $data['error'] = "You're already logged in!";
+        $data['message'] = "You're already logged in!";
     }
 }
 //user logout system
@@ -82,7 +81,7 @@ if (isset($_REQUEST['logout'])) {
             "message" => "You're Logged out!",
         ];
     } else {
-        $data['error'] = "Access denied. You're not logged in!";
+        $data['message'] = "Access denied. You're not logged in!";
     }
 }
 header("Content-type: application/json");

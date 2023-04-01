@@ -28,26 +28,27 @@ if ($_REQUEST) {
                                 $fetchResp = false;
                             }
                         }
-                    }
-                    //checking if the same ip adress sent request more than 3 times to make them login
-                    if (!$Auth->isLoggedIn()) {
-                        $myIp = htmlspecialchars($Auth::fetch_ip());
-                        $stmt = $conn->prepare("SELECT * FROM requests WHERE ip=?");
-                        $stmt->bind_param('s', $myIp);
-                        $stmt->execute();
-                        $resp = $stmt->get_result();
-                        $noLoginRequests = 0;
-                        while ($details = mysqli_fetch_assoc($resp)) {
-                            if ((int)$details['isLoggedIn'] === 0) {
-                                $noLoginRequests += 1;
+                        //checking if the same ip adress sent request more than 3 times to make them login
+                        if (!$Auth->isLoggedIn()) {
+                            $myIp = htmlspecialchars($Auth::fetch_ip());
+                            $stmt = $conn->prepare("SELECT * FROM requests WHERE ip=?");
+                            $stmt->bind_param('s', $myIp);
+                            $stmt->execute();
+                            $resp = $stmt->get_result();
+                            $noLoginRequests = 0;
+                            while ($details = mysqli_fetch_assoc($resp)) {
+                                if ((int)$details['isLoggedIn'] === 0) {
+                                    $noLoginRequests += 1;
+                                }
+                            }
+                            if ($noLoginRequests >= 3) {
+                                $fetchResp = false;
+                                $data['error'] = "Access denied. Please login to continue!";
+                                $data['action'] = "auth.login";
                             }
                         }
-                        if ($noLoginRequests >= 3) {
-                            $fetchResp = false;
-                            $data['error'] = "Access denied. Please login to continue!";
-                            $data['action'] = "auth.login";
-                        }
                     }
+
 
                     if ($fetchResp) {
                         $rephrase = htmlspecialchars($_REQUEST['sentence']);
