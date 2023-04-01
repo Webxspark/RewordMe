@@ -35,7 +35,7 @@ const UserInfo = () => {
             return;
         }
         //send data to server
-        fetch("http://localhost/userAuth.php", {
+        fetch("https://ai.webxspark.com/api/reword-me/userAuth", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -76,7 +76,7 @@ const UserInfo = () => {
             return;
         }
         //send data to server
-        fetch("http://localhost/userAuth.php", {
+        fetch("https://ai.webxspark.com/api/reword-me/userAuth", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -105,6 +105,14 @@ const UserInfo = () => {
     function logout() {
         localStorage.removeItem('auth');
         setLoginDetails(null);
+        //send request to server to logout
+        fetch("https://ai.webxspark.com/api/reword-me/userAuth", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `logout=true`
+        })
     }
     //return the user info if logged in or Login button if not
     return (

@@ -10,10 +10,10 @@ function App() {
       <div>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Landing />} />
-          <Route path='/contact-us' element={<ContactUs />} />
-          <Route path='/feedback' element={<ContactUs />} />
-          <Route path='/api' element={<ApiInfo />} />
+          <Route path='/reword-me/' element={<Landing />} />
+          <Route path='/reword-me/contact-us' element={<ContactUs />} />
+          <Route path='/reword-me/feedback' element={<ContactUs />} />
+          <Route path='/reword-me/api' element={<ApiInfo />} />
         </Routes>
       </div>
     </BrowserRouter>
