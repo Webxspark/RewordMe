@@ -15,17 +15,18 @@ if ($_REQUEST) {
             if ($AuthCheck) {
                 $ValidateKeyCredits = $Auth->ValidateKeyCredits($conn, $APIKEY);
                 if ($ValidateKeyCredits) {
-                    if($APIKEY === "com.beta.reword-me.webxspark.app"){
+                    if ($APIKEY === "com.beta.reword-me.webxspark.app") {
                         //check if the request is from same domain for api security
                         $domain = $_SERVER['HTTP_ORIGIN'];
-                        if($domain !== "https://rewordme.webxspark.com"){
+                        if ($domain !== "https://rewordme.webxspark.com") {
                             $data['error'] = "Access forbidden! Invalid domain!";
                             $fetchResp = false;
                         }
-                        //check if the request if from fetch api request of ajax request
-                        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest')) {
-                            $data['error'] = "Access forbidden!";
-                            $fetchResp = false;
+                        if ($fetchResp === true) {
+                            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest')) {
+                                $data['error'] = "Access forbidden!";
+                                $fetchResp = false;
+                            }
                         }
                     }
 
