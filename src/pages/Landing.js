@@ -4,7 +4,6 @@ import ResponseCard from "../components/responseCards";
 import SkeletonResponseCard from "../components/skeleton-responseCard";
 import { useState } from "react";
 import { message } from "antd";
-import UserInfo from "../components/userInfo";
 
 
 const Landing = () => {
@@ -30,7 +29,7 @@ const Landing = () => {
 
         //endpoint request
         // #Production url: https://ai.webxspark.com/api/reword-me/rephrase
-        const url = 'http://localhost/rephrase.php';
+        const url = 'https://ai.webxspark.com/api/reword-me/rephrase';
         const formData = new URLSearchParams();
         formData.append('sentence', sentence);
         formData.append('key', localStorage.auth ? JSON.parse(localStorage.auth).key : 'com.beta.reword-me.webxspark.app');
@@ -90,7 +89,12 @@ const Landing = () => {
                         <h1 className="text-[30px] font-bold text-[#18113D]">RewordMe - Sentence Rephraser AI</h1>
                         <span className='text-[15px] pt-0 font-bold text-[#4F4F4F]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet mi eros, eget lacinia massa pulvinar in. Sed luctus est sit amet volutpat dictum.</span>
                         <div>
-                            <Button className='mt-6' color={"secondary"} shadow>TRY IT OUT</Button>
+                            <Button className='mt-6' onClick={() => {
+                                //select all chars in textarea
+                                document.querySelector('textarea').select();
+                                //scroll to textarea
+                                document.querySelector('textarea').scrollIntoView();
+                            }} color={"secondary"} shadow>TRY IT OUT</Button>
                         </div>
                     </div>
                 </div>

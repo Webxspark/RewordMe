@@ -42,5 +42,6 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.2.7"
-  }
+  },
+  "homepage": "https://ai.webxspark.com/reword-me"
 }

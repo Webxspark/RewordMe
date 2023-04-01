@@ -23,7 +23,8 @@ if (isset($_REQUEST['signup']) && isset($_REQUEST['email']) && isset($_REQUEST['
                     "context" => [
                         "content" => [
                             "username" => $username,
-                            "key" => $api_key
+                            "key" => $api_key,
+                            "email" => $email
                         ]
                     ]
                 ];
@@ -57,7 +58,8 @@ if (isset($_REQUEST['login']) && isset($_REQUEST['email']) && isset($_REQUEST['p
                     "context" => [
                         "content" => [
                             "username" => $user['username'],
-                            "key" => $user['auth_key']
+                            "key" => $user['auth_key'],
+                            "email" => $user['email']
                         ]
                     ]
                 ];

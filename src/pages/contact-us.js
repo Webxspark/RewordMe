@@ -10,15 +10,16 @@ const ContactUs = () => {
         //validating form
         const name = e.target[0].value;
         const email = e.target[1].value;
-        const message = e.target[2].value;
+        const subject = e.target[2].value;
+        const message = e.target[3].value;
 
-        if (name === "" || email === "" || message === "") {
+        if (name === "" || email === "" || subject === "" || message === "") {
             messageApi.info("Please fill all the fields");
             return;
         }
-        const data = `name=${encodeURIComponent(name)}&email=${email}&message=${message}&test=true`;
+        const data = `name=${encodeURIComponent(name)}&email=${email}&message=${message}&subject=${subject}&sendMsg=true`;
         setBtnLoadingState(true);
-        fetch("https://apis.webxspark.com/v2.0/email-subscription/subscribe", {
+        fetch("https://ai.webxspark.com/api/reword-me/contact", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -27,14 +28,13 @@ const ContactUs = () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.status === "success") {
+                if (data.status == "200") {
                     messageApi.success('Message sent successfully!')
                     //clear all text fields
                     e.target[0].value = "";
                     e.target[1].value = "";
                     e.target[2].value = "";
                     e.target[3].value = "";
-                    e.target[4].value = "";
                 } else {
                     messageApi.error(data.message);
                 }
@@ -53,15 +53,14 @@ const ContactUs = () => {
                 <p className="text-md md:text-lg lg:text-xl lg:w-3/5 mx-8 md:mx-0 text-center mt-4">Aliquam a augue suscipit, luctus neque purus ipsum neque at dolor primis libero tempus, blandit and cursus varius and magnis sapien</p>
                 <form className="mb-24" onSubmit={handleFormSubmission}>
                     <div className="flex flex-col md:flex-row gap-5 mt-12">
-                        <input className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="text" placeholder="Name" />
-                        <input className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="email" placeholder="Email" />
+                        <input name="name" value={localStorage.auth ? JSON.parse(localStorage.auth).username: ''} className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="text" placeholder="Name" />
+                        <input name="email" value={localStorage.auth ? JSON.parse(localStorage.auth).email: ''} className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="email" placeholder="Email" />
                     </div>
                     <div className="flex flex-col lg:flex-row gap-5 mt-5">
-                        <input className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="text" placeholder="Subject" />
-                        <input className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="tel" placeholder="Phone" />
+                        <input name="subject" className="w-full p-4 rounded-xl border-2 border-gray-200" type="text" placeholder="Subject" />
                     </div>
                     <div className="flex flex-col mt-5">
-                        <textarea className="w-full p-4 rounded-xl border-2 resize-none border-gray-200" placeholder="Message" />
+                        <textarea name="message" className="w-full p-4 rounded-xl border-2 resize-none border-gray-200" placeholder="Message" />
                     </div>
                     {/* <Button htmlType="submit" type="null" loading={BtnLoadingState} className="bg-black border-2 p-4 border-black h-auto rounded-lg font-semibold text-white text-md mt-5">Send Message</Button> */}
                     <Button className="mt-5 text-md" type="submit" disabled={BtnLoadingState} auto>Send Message</Button>
