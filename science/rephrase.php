@@ -18,7 +18,7 @@ if ($_REQUEST) {
                     if ($APIKEY === "com.beta.reword-me.webxspark.app") {
                         //check if the request is from same domain for api security
                         $domain = $Auth->getDomainWithSSL();
-                        if ($domain !== "https://rewordme.webxspark.com") {
+                        if ($domain !== "https://rewordme.webxspark.com" && $domain !== "http://localhost") {
                             $data['error'] = "Access forbidden! Error code: 001";
                             $fetchResp = false;
                         }
@@ -27,6 +27,25 @@ if ($_REQUEST) {
                                 $data['error'] = "Access forbidden! Error code: 002";
                                 $fetchResp = false;
                             }
+                        }
+                    }
+                    //checking if the same ip adress sent request more than 3 times to make them login
+                    if (!$Auth->isLoggedIn()) {
+                        $myIp = htmlspecialchars($Auth::fetch_ip());
+                        $stmt = $conn->prepare("SELECT * FROM requests WHERE ip=?");
+                        $stmt->bind_param('s', $myIp);
+                        $stmt->execute();
+                        $resp = $stmt->get_result();
+                        $noLoginRequests = 0;
+                        while ($details = mysqli_fetch_assoc($resp)) {
+                            if ((int)$details['isLoggedIn'] === 0) {
+                                $noLoginRequests += 1;
+                            }
+                        }
+                        if ($noLoginRequests >= 3) {
+                            $fetchResp = false;
+                            $data['error'] = "Access denied. Please login to continue!";
+                            $data['action'] = "auth.login";
                         }
                     }
 
@@ -51,11 +70,13 @@ if ($_REQUEST) {
                         $response = curl_exec($curl);
                         $response = json_decode($response, true);
                         $sentences = [];
-                        foreach ($response['sentences'] as $key => $val) {
-                            unset($response['sentences'][$key]['Frequency']);
-                            unset($response['sentences'][$key]['Id']);
-                            unset($response['sentences'][$key]['Classification']);
-                            $sentences[$key] = $response['sentences'][$key]['Sentence'];
+                        if (isset($response['sentences'])) {
+                            foreach ($response['sentences'] as $key => $val) {
+                                unset($response['sentences'][$key]['Frequency']);
+                                unset($response['sentences'][$key]['Id']);
+                                unset($response['sentences'][$key]['Classification']);
+                                $sentences[$key] = $response['sentences'][$key]['Sentence'];
+                            }
                         }
                         $response['sentences'] = $sentences;
                         $err = curl_error($curl);
@@ -78,9 +99,9 @@ if ($_REQUEST) {
                         $ip = $Auth::fetch_ip();
                         $endTime = microtime(true);
                         $reqRespTime = ($endTime - $startTime);
-
-                        $stmt = $conn->prepare("INSERT INTO requests(username,sentence,max_resp_time,ip) VALUES (?,?,?,?)");
-                        $stmt->bind_param('ssss', $userName, $rephrase, $reqRespTime, $ip);
+                        $isLoggedIn = $Auth->isLoggedIn() ? 1 : 0;
+                        $stmt = $conn->prepare("INSERT INTO requests(username,sentence,max_resp_time,ip, isLoggedIn) VALUES (?,?,?,?,?)");
+                        $stmt->bind_param('sssss', $userName, $rephrase, $reqRespTime, $ip, $isLoggedIn);
                         $stmt->execute();
 
                         $stmt = $conn->prepare("UPDATE analytics SET requests = requests + 1 WHERE id = 1");

@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#php sessions
+/science/__wxp_secure_-usr_sessions
