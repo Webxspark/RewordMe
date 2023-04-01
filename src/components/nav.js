@@ -1,6 +1,6 @@
-import Pfp from "../assets/pfp.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import UserInfo from "./userInfo";
 export default function Navbar() {
     const [MobileDrawerVisibility, setMobileDrawerVisibility] = useState("hidden");
     function updateNavVisibility() {
@@ -20,17 +20,11 @@ export default function Navbar() {
                 </div>
                 <div className="flex justify-end items-center mr-12 gap-2">
                     <div className="pr-8 md:block hidden">
-                        <Link to="/contact-us" className="p-4 text-black font-semibold text-md">Contact Us</Link>
+                        <Link to="/contact-us" className="p-4 text-black font-semibold text-md">Contact</Link>
                         <Link to="/feedback" className="p-4 text-black font-semibold text-md">Feedback</Link>
                         <Link to="/api" className="p-4 text-black font-semibold text-md">API</Link>
                     </div>
-                    <a href="https://webxspark.com" rel="dofollow noreferrer noopener" className="hidden lg:block" target={'_blank'} >
-                        <img alt="" src={Pfp} className="w-16 h-16 p-2 cursor-pointer hover:drop-shadow-md transition-300 rounded-full ease-in-out duration-200 " />
-                    </a>
-                    <span className="lg:flex flex-col hidden">
-                        <span className="font-semibold text-md pt-2">Team Sparkeans</span>
-                        <a href="https://webxspark.com" rel="dofollow noreferrer noopener" target={'_blank'} ><p className="text-blue-700 text-sm">@webxspark</p></a>
-                    </span>
+                    {<UserInfo />}
                 </div>
                 {/* Mobile menu, show/hide based on menu state. */}
                 <div className={"sm:hidden w-full " + MobileDrawerVisibility} id="mobile-menu">

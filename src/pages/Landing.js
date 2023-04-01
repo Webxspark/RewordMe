@@ -4,6 +4,7 @@ import ResponseCard from "../components/responseCards";
 import SkeletonResponseCard from "../components/skeleton-responseCard";
 import { useState } from "react";
 import { message } from "antd";
+import UserInfo from "../components/userInfo";
 
 
 const Landing = () => {
@@ -28,10 +29,11 @@ const Landing = () => {
         setSubmitBtnDisabled(true);
 
         //endpoint request
-        const url = 'https://ai.webxspark.com/api/reword-me/rephrase';
+        // #Production url: https://ai.webxspark.com/api/reword-me/rephrase
+        const url = 'http://localhost/rephrase.php';
         const formData = new URLSearchParams();
         formData.append('sentence', sentence);
-        formData.append('key', "com.beta.reword-me.webxspark.app");
+        formData.append('key', localStorage.auth ? JSON.parse(localStorage.auth).key : 'com.beta.reword-me.webxspark.app');
 
         fetch(url, {
             method: 'POST',
@@ -45,6 +47,11 @@ const Landing = () => {
                 if (data.error) {
                     messageApi.error(data.error, 5);
                     setResult('');
+                    if (data.action) {
+                        if (data.action == "auth.login") {
+                            document.getElementById('login-btn').click();
+                        }
+                    }
                 }
                 if (data.response) {
                     var ndata = data.response;
