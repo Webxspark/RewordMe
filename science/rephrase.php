@@ -19,12 +19,12 @@ if ($_REQUEST) {
                         //check if the request is from same domain for api security
                         $domain = $_SERVER['HTTP_ORIGIN'];
                         if ($domain !== "https://rewordme.webxspark.com") {
-                            $data['error'] = "Access forbidden! Invalid domain!";
+                            $data['error'] = "Access forbidden! Error code: 001";
                             $fetchResp = false;
                         }
                         if ($fetchResp === true) {
                             if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest')) {
-                                $data['error'] = "Access forbidden!";
+                                $data['error'] = "Access forbidden! Error code: 002";
                                 $fetchResp = false;
                             }
                         }
