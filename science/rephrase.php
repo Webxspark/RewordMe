@@ -17,7 +17,7 @@ if ($_REQUEST) {
                 if ($ValidateKeyCredits) {
                     if ($APIKEY === "com.beta.reword-me.webxspark.app") {
                         //check if the request is from same domain for api security
-                        $domain = $_SERVER['HTTP_ORIGIN'];
+                        $domain = $Auth->getDomainWithSSL();
                         if ($domain !== "https://rewordme.webxspark.com") {
                             $data['error'] = "Access forbidden! Error code: 001";
                             $fetchResp = false;
