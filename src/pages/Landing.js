@@ -26,6 +26,8 @@ const Landing = () => {
         }
         setResult(<SkeletonResponseCard />);
         setSubmitBtnDisabled(true);
+        //scroll down
+        document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
 
         //endpoint request
         // #Production url: https://ai.webxspark.com/api/reword-me/rephrase
@@ -118,7 +120,7 @@ const Landing = () => {
                                     </Button>
                                 </div>
                             </form>
-                            <div className="pt-4 w-full flex flex-col gap-4">
+                            <div className="pt-4 w-full flex flex-col gap-4" id="result">
                                 {result}
                             </div>
                         </div>
