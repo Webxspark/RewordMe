@@ -1,6 +1,13 @@
 import { FaRegCopy } from "react-icons/fa";
 import { useState, useEffect } from 'react';
+import { message } from "antd";
 const ResponseCard = (props) => {
+    const [messageApi, contextHolder] = message.useMessage();
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text);
+        messageApi.success("Copied to clipboard!");
+    }
     //comparing and highlighting new words by <b> tag
     function strip_punctuations(string) {
         return string.replace(/[?,!;,.]/g, '');
@@ -43,9 +50,9 @@ const ResponseCard = (props) => {
         <>
             <div className={`w-full bg-white p-6 flex justify-between items-center rounded-lg transition-all ${showDivs ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}>
                 <div dangerouslySetInnerHTML={highlightNewWords(props.newText, props.originalText)}></div>
-                <div className="cursor-pointer text-[#969696] text-xl p-2 hover:bg-[#faf3ff]"><FaRegCopy /></div>
+                <div onClick={() => copyToClipboard(props.newText)} text={props.newText} className="cursor-pointer text-[#969696] text-xl p-2 hover:bg-[#faf3ff]"><FaRegCopy /></div>
             </div>
-            
+            {contextHolder}
         </>
     )
 }

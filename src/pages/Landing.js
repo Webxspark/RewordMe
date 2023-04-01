@@ -2,7 +2,79 @@ import { Button } from "@nextui-org/react";
 import { FaArrowDown, FaMagic } from "react-icons/fa";
 import ResponseCard from "../components/responseCards";
 import SkeletonResponseCard from "../components/skeleton-responseCard";
+import { useState } from "react";
+import { message } from "antd";
+
+
 const Landing = () => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const [result, setResult] = useState('');
+    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const text = data.get('sentence');
+        //remove ' from text
+        var sentence = text.replace(/'/g, "");
+        if (sentence == "") {
+            messageApi.error("Please enter a sentence!");
+            return;
+        }
+        if (sentence.length > 200) {
+            messageApi.error("Please enter a sentence with less than 200 characters!");
+            return;
+        }
+        setResult(<SkeletonResponseCard />);
+        setSubmitBtnDisabled(true);
+
+        //endpoint request
+        const url = 'https://ai.webxspark.com/api/reword-me/rephrase';
+        const formData = new URLSearchParams();
+        formData.append('sentence', sentence);
+        formData.append('key', "com.beta.reword-me.webxspark.app");
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    messageApi.error(data.error, 5);
+                    setResult('');
+                }
+                if (data.response) {
+                    var ndata = data.response;
+                    if (ndata.error) {
+                        messageApi.error(ndata.message, 5);
+                        setResult('');
+                    } else {
+                        var respSentences = ndata.sentences;
+                        var resp = [];
+                        setResult(
+
+                            respSentences.map((_sentence, index) => {
+                                return (
+                                    <ResponseCard originalText={sentence} newText={_sentence} />
+                                )
+                            })
+
+                        )
+                    }
+                }
+                setSubmitBtnDisabled(false);
+            })
+            .catch(error => {
+                console.error(error)
+                messageApi.error("Something went wrong! Plese try again later.");
+                setResult('');
+                setSubmitBtnDisabled(false);
+            });
+
+    }
     return (
         <>
             <div className='h-[100dvh] grid grid-cols-2'>
@@ -24,23 +96,25 @@ const Landing = () => {
                             <FaArrowDown />
                         </div>
                         <div className='pt-12 w-full'>
-                            <textarea maxLength={200} className='w-full  drop-shadow-md p-4 font-[Inter] rounded-xl border-[1.2px] border-[#bdbdbd] resize-none' placeholder='Type something...' rows={5}></textarea>
-                            <div className="pt-2 flex w-full justify-center">
-                                <Button bordered color="primary" className="w-90 p-4">
-                                    <div className="flex gap-2 items-center text-lg font-semibold">
-                                        Rephrase
-                                        <FaMagic />
-                                    </div>
-                                </Button>
-                            </div>
+                            <form method="POST" onSubmit={handleFormSubmit}>
+                                <textarea maxLength={200} name="sentence" className='w-full drop-shadow-md p-4 font-[Inter] rounded-xl border-[1.2px] border-[#bdbdbd] resize-none' placeholder='Type something...' rows={5}></textarea>
+                                <div className="pt-2 flex w-full justify-center">
+                                    <Button disabled={submitBtnDisabled} type="submit" bordered color="primary" className="w-90 p-4">
+                                        <div className="flex gap-2 items-center text-lg font-semibold">
+                                            Rephrase
+                                            <FaMagic />
+                                        </div>
+                                    </Button>
+                                </div>
+                            </form>
                             <div className="pt-4 w-full flex flex-col gap-4">
-                                {/* <ResponseCard originalText="I will keep you informed about how things go." newText="I'll keep you in the loop." /> */}
-                                <SkeletonResponseCard />
+                                {result}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {contextHolder}
         </>
     )
 }
