@@ -77,9 +77,9 @@ const Landing = () => {
     }
     return (
         <>
-            <div className='h-[100dvh] grid grid-cols-2'>
+            <div className='h-[100dvh] grid grid-cols-1 lg:grid-cols-2'>
                 <div>
-                    <div className='mx-8 flex pb-48 mt-24 pt-24 flex-col h-[100%]'>
+                    <div className='mx-8 flex lg:mt-24 pt-24 flex-col h-[100%]'>
                         <h1 className="text-[30px] font-bold text-[#18113D]">RewordMe - Sentence Rephraser AI</h1>
                         <span className='text-[15px] pt-0 font-bold text-[#4F4F4F]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet mi eros, eget lacinia massa pulvinar in. Sed luctus est sit amet volutpat dictum.</span>
                         <div>
@@ -89,7 +89,7 @@ const Landing = () => {
                 </div>
 
                 <div>
-                    <div className="my-24 mr-12 flex items-center justify-center flex-col bg-[#f6f5fa] p-10 rounded-lg">
+                    <div className="lg:my-24 my-12 lg:mx-12 mx-2 flex items-center justify-center flex-col bg-[#f6f5fa] py-10 w-auto px-4 rounded-lg">
                         <div className='font-semibold text-lg text-[#4F4F4F] flex items-center gap-3'>
                             <FaArrowDown />
                             Try it for free
