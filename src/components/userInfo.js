@@ -11,7 +11,11 @@ const UserInfo = () => {
     const [signupForm, setSignupForm] = useState(false);
     const [messageApi, __contextHolder] = message.useMessage();
     const { setIsLoggedIn } = useContext(LoginStatusContext);
-
+    if (loginDetails) {
+        setIsLoggedIn(true);
+    } else {
+        setIsLoggedIn(false);
+    }
     const login = () => {
         // handleLoginAction();
         // setLoginDetails({ name: "Team Sparkeans", mention: "webxspark", pfp: Pfp });
