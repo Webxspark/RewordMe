@@ -49,8 +49,8 @@ const ContactUs = () => {
     return (
         <>
             <div className=" mt-12 flex flex-col items-center w-screen">
-                <div className="text-[#18113D] text-2xl lg:text-3xl md:text-2xl font-bold mt-12 lg:w-2/5 text-center">Have a question? Need help? Don't hesitate, drop us a line</div>
-                <p className="text-md md:text-lg lg:text-xl lg:w-3/5 mx-8 md:mx-0 text-center mt-4">Aliquam a augue suscipit, luctus neque purus ipsum neque at dolor primis libero tempus, blandit and cursus varius and magnis sapien</p>
+                <div className="text-[#18113D] text-2xl lg:text-3xl md:text-2xl font-bold mt-12 lg:w-2/5 text-center">Discover the Future of Sentence Rephrasing with RewordMe and Webxspark!</div>
+                <p className="text-md md:text-lg lg:text-xl lg:w-3/5 font-semibold lg:font-medium mx-8 md:mx-0 text-center mt-4">Interested in beta testing RewordMe or have questions about Webxspark? Contact us today to learn more and receive free beta testing credits for qualified applicants.</p>
                 <form className="mb-24" onSubmit={handleFormSubmission}>
                     <div className="flex flex-col md:flex-row gap-5 mt-12">
                         <input name="name" value={localStorage.auth ? JSON.parse(localStorage.auth).username: ''} className="w-full lg:w-1/2 p-4 rounded-xl border-2 border-gray-200" type="text" placeholder="Name" />

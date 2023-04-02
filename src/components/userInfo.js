@@ -1,13 +1,16 @@
 import Pfp from "../assets/pfp.png";
 import { Modal, Checkbox, Button } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { message } from "antd";
+import { LoginStatusContext } from "./LoginContext";
+
 const UserInfo = () => {
     var _loginDetails = localStorage.auth ? JSON.parse(localStorage.auth) : null;
     const [loginDetails, setLoginDetails] = useState(_loginDetails);
     const [Modalvisible, setModalVisible] = useState(false);
     const [signupForm, setSignupForm] = useState(false);
     const [messageApi, __contextHolder] = message.useMessage();
+    const { setIsLoggedIn } = useContext(LoginStatusContext);
 
     const login = () => {
         // handleLoginAction();
@@ -51,6 +54,7 @@ const UserInfo = () => {
                     })
                     localStorage.setItem('auth', JSON.stringify(data.context.content));
                     setModalVisible(false);
+                    setIsLoggedIn(true)
                 } else {
                     messageApi.error(data.message);
                 }
@@ -92,6 +96,7 @@ const UserInfo = () => {
                     })
                     localStorage.setItem('auth', JSON.stringify(data.context.content));
                     setModalVisible(false);
+                    setIsLoggedIn(true)
                 } else {
                     messageApi.error(data.message);
                 }
@@ -113,22 +118,23 @@ const UserInfo = () => {
             },
             body: `logout=true`
         })
+        setIsLoggedIn(false)
     }
     //return the user info if logged in or Login button if not
     return (
         <>
             {loginDetails ? (
                 <>
-                    <a href="https://webxspark.com" rel="dofollow noreferrer noopener" className="hidden lg:block" target={'_blank'} >
+                    <a href="https://webxspark.com" rel="dofollow noreferrer noopener" className="lg:block hidden" target={'_blank'} >
                         <img alt="" src={Pfp} className="w-16 h-16 p-2 cursor-pointer hover:drop-shadow-md transition-300 rounded-full ease-in-out duration-200 " />
                     </a>
-                    <span className="lg:flex flex-col hidden">
-                        <span className="font-semibold text-md pt-2">{loginDetails.username}</span>
-                        <div onClick={logout} ><p className="text-blue-700 text-sm cursor-pointer">Logout</p></div>
+                    <span className="md:flex flex-col hidden">
+                        <span className="font-semibold md:text-sm lg:text-base pt-2">{loginDetails.username}</span>
+                        <div onClick={logout} ><p className="text-blue-700 text-sm cursor-pointer" id="logout">Logout</p></div>
                     </span>
                 </>
             ) : (
-                <div className="hidden md:block">
+                <div className="md:block hidden">
                     <Button auto color="primary" id="login-btn" onPress={login} rounded shadow>
                         <p className="px-6">Login</p>
                     </Button>

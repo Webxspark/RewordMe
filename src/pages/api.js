@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+import Linkify from "../components/Linkify";
 
 const ApiInfo = () => {
     const columns = [
@@ -49,57 +51,45 @@ const ApiInfo = () => {
         },
 
         {
-            key: "6",
+            key: "7",
             info: "Example",
-            details: `https://ai.webxspark.com/api/reword-me/rephrase?sentence=I am a good boy&key=${apiKey}`,
+            details: `https://ai.webxspark.com/api/reword-me/rephrase?sentence=I%20am%20a%20good%20boy&key=${apiKey}`,
         },
 
 
     ];
     return (
         <>
-            <div className="w-full flex justify-center my-24">
-                <div className="bg-white drop-shadow-lg py-12 px-24 rounded-lg">
-                    <div className="w-full text-center text-xl font-semibold">API Documentation</div>
-                    <div className="w-full mt-4 px-12">
-                        {/* responsive tailwind table with the data */}
-                        <div className="w-full overflow-x-auto">
-                            <table className="w-full whitespace-no-wrap">
-                                <thead>
-                                    <tr
-                                        className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-100"
-                                    >
-                                        {columns.map((column) => (
-                                            <th
-                                                key={column.key}
-                                                className="px-4 py-3"
-                                            >
-                                                {column.label}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    className="bg-white divide-y"
-                                >
-                                    {rows.map((row) => (
-                                        <tr
-                                            key={row.key}
-                                            className="text-gray-700"
-                                        >
-                                            {columns.map((column) => (
-                                                <td
-                                                    key={column.key}
-                                                    className="px-4 py-3"
-                                                >
-                                                    {row[column.key]}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+            <div className="w-full flex justify-center my-12 font-[Inter]">
+                <div className="bg-white shadow overflow-hidden md:mx-12 mx-4 lg:mx-24 sm:rounded-lg w-full">
+                    <div className="px-4 py-5 sm:px-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">
+                            API Documentation
+                        </h3>
+                    </div>
+                    <div className="border-t border-gray-200">
+                        <dl>
+                            {rows.map((row) => (
+                                <Fragment key={row.key}>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500">
+                                            {columns[0].label}
+                                        </dt>
+                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                            {row[columns[0].key]}
+                                        </dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500">
+                                            {columns[1].label}
+                                        </dt>
+                                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                            <Linkify text={row[columns[1].key]} />
+                                        </dd>
+                                    </div>
+                                </Fragment>
+                            ))}
+                        </dl>
                     </div>
                 </div>
             </div>

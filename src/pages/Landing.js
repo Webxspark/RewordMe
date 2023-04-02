@@ -27,7 +27,7 @@ const Landing = () => {
         setResult(<SkeletonResponseCard />);
         setSubmitBtnDisabled(true);
         //scroll down
-        document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 750)
 
         //endpoint request
         // #Production url: https://ai.webxspark.com/api/reword-me/rephrase
@@ -85,11 +85,11 @@ const Landing = () => {
     }
     return (
         <>
-            <div className='h-[100dvh] grid grid-cols-1 lg:grid-cols-2'>
+            <div className='h-[100dvh] grid grid-cols-1 lg:grid-cols-2  font-[Inter]'>
                 <div>
                     <div className='mx-8 flex lg:mt-24 pt-24 flex-col h-[100%]'>
-                        <h1 className="text-[30px] font-bold text-[#18113D]">RewordMe - Sentence Rephraser AI</h1>
-                        <span className='text-[15px] pt-0 font-bold text-[#4F4F4F]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam laoreet mi eros, eget lacinia massa pulvinar in. Sed luctus est sit amet volutpat dictum.</span>
+                        <h1 className="lg:text-4xl text-2xl font-semibold text-[#18113D]">Introducing RewordMe: The AI-Powered Sentence Rephraser</h1>
+                        <span className='lg:text-[17px] text-[15px] pt-0 font-medium text-[#4F4F4F]'>Tired of struggling with writer's block? Need a fresh perspective on your writing? Look no further than RewordMe, the innovative new tool from Webxspark. Our AI-powered rephraser takes your text and gives it a new spin, transforming your writing into something truly unique.</span>
                         <div>
                             <Button className='mt-6' onClick={() => {
                                 //select all chars in textarea
