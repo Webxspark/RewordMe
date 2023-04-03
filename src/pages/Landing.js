@@ -2,14 +2,15 @@ import { Button } from "@nextui-org/react";
 import { FaArrowDown, FaMagic } from "react-icons/fa";
 import ResponseCard from "../components/responseCards";
 import SkeletonResponseCard from "../components/skeleton-responseCard";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { message } from "antd";
-
+import { LoginStatusContext } from "../components/LoginContext";
 
 const Landing = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [result, setResult] = useState('');
     const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
+    const { isLoggedIn } = useContext(LoginStatusContext);
     function handleFormSubmit(e) {
         e.preventDefault();
         const data = new FormData(e.target);
@@ -90,13 +91,20 @@ const Landing = () => {
                     <div className='mx-8 flex lg:mt-24 pt-24 flex-col h-[100%]'>
                         <h1 className="lg:text-4xl text-2xl font-semibold text-[#18113D]">Introducing RewordMe: The AI-Powered Sentence Rephraser</h1>
                         <span className='lg:text-[17px] text-[15px] pt-0 font-medium text-[#4F4F4F]'>Tired of struggling with writer's block? Need a fresh perspective on your writing? Look no further than RewordMe, the innovative new tool from Webxspark. Our AI-powered rephraser takes your text and gives it a new spin, transforming your writing into something truly unique.</span>
-                        <div>
-                            <Button className='mt-6' onClick={() => {
-                                //select all chars in textarea
+                        <div className="mt-6 hidden w-full md:flex gap-4">
+                            <Button className='' onClick={() => {
                                 document.querySelector('textarea').select();
-                                //scroll to textarea
                                 document.querySelector('textarea').scrollIntoView();
                             }} color={"secondary"} shadow>TRY IT OUT</Button>
+                        </div>
+                        <div className="mt-6 md:hidden w-full flex-col sm:flex-row sm:justify-start flex justify-center md:flex-row h-full gap-4">
+                            <Button className='' onClick={() => {
+                                document.querySelector('textarea').select();
+                                document.querySelector('textarea').scrollIntoView();
+                            }} color={"secondary"} shadow>TRY IT OUT</Button>
+                            {isLoggedIn ? <></> : (<>
+                                <Button id="login-btn" onClick={() => { document.getElementById('login-btn').click() }} color={""} ghost>LOGIN</Button>
+                            </>)}
                         </div>
                     </div>
                 </div>
