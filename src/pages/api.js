@@ -1,9 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Linkify from "../components/Linkify";
-import {useLoadingContext} from "react-router-loading"
+import { useLoadingContext } from "react-router-loading";
+import { LoginStatusContext } from "../components/LoginContext";
 
 const ApiInfo = () => {
     const Loading = useLoadingContext();
+    const { isLoggedIn } = useContext(LoginStatusContext);
     Loading.done()
     const columns = [
         {
@@ -15,7 +17,15 @@ const ApiInfo = () => {
             label: "Details",
         },
     ];
-    var apiKey = localStorage.auth ? JSON.parse(localStorage.auth).key : 'com.beta.reword-me.webxspark.app';
+    // var apiKey = localStorage.auth ? JSON.parse(localStorage.auth).key : '';
+    const [apiKey, setApiKey] = useState("com.beta.reword-me.webxspark.app");
+    useEffect(() => {
+        if (isLoggedIn) {
+            setApiKey(localStorage.auth ? JSON.parse(localStorage.auth).key : 'com.beta.reword-me.webxspark.app');
+        } else {
+            setApiKey('com.beta.reword-me.webxspark.app');
+        }
+    }, [isLoggedIn])
     const rows = [
         {
             key: "1",
@@ -26,7 +36,7 @@ const ApiInfo = () => {
         {
             key: "2",
             info: "API Key",
-            details: localStorage.auth ? JSON.parse(localStorage.auth).key : 'Login to get your API Key',
+            details: isLoggedIn ? apiKey : 'Login to get your API Key',
         },
 
         {

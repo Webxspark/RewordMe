@@ -121,7 +121,7 @@ if ($_REQUEST) {
         $data['error'] = "No rephrase text provided!";
     }
 } else {
-    header("Location: https://rewordme.webxspark.com");
+    header("Location: https://ai.webxspark.com/reword-me");
 }
 $endTime = microtime(true);
 $executionTime = ($endTime - $startTime);

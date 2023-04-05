@@ -2,8 +2,8 @@ import { Button } from "@nextui-org/react";
 import { FaArrowDown, FaMagic } from "react-icons/fa";
 import ResponseCard from "../components/responseCards";
 import SkeletonResponseCard from "../components/skeleton-responseCard";
-import { useContext, useEffect, useState } from "react";
-import { message } from "antd";
+import { useContext, useEffect, useState, useRef } from "react";
+import { Tour, message } from "antd";
 import { LoginStatusContext } from "../components/LoginContext";
 import { useLoadingContext } from "react-router-loading"
 
@@ -14,11 +14,36 @@ const Landing = () => {
     const [result, setResult] = useState('');
     const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
     const { isLoggedIn, userCredits, setUserCredits } = useContext(LoginStatusContext);
+    const ref1 = useRef(null);
+    const ref2 = useRef(null);
+    const [tourOpen, setTourOpen] = useState(false);
     function WordCount(str) {
         return str.split(' ')
             .filter(function (n) { return n != '' })
             .length;
     }
+    const TourSteps = [
+        {
+            title: "Welcome to RewordMe!",
+            description: "With our AI-powered sentence rephraser, you can transform your writing into clear, concise, and engaging content.",
+            target: null,
+        },
+        {
+            title: "Content",
+            description: "Simply copy and paste your text into this input box, and watch our algorithm do the rest! (Max. 200 words)",
+            target: () => ref1.current,
+        },
+        {
+            title: "",
+            description: "Our advanced algorithm scans your text, recognizes the context, and suggests alternative phrasing that best fits your intended meaning. You can choose from the list of suggestions, or use our powerful paraphrasing tool to generate new sentences on-the-fly!",
+            target: null,
+        },
+        {
+            title: "RewordMe is currently under beta testing!",
+            description: "We're constantly updating and improving our service. We'd love to hear your feedback and suggestions, so please don't hesitate to reach out to us. Thanks for trying out RewordMe, and happy writing!",
+            target: null,
+        },
+    ];
     useEffect(() => {
         if (isLoggedIn) {
             if (!userCredits) {
@@ -143,6 +168,7 @@ const Landing = () => {
                             <Button className='' onClick={() => {
                                 document.querySelector('textarea').select();
                                 document.querySelector('textarea').scrollIntoView();
+                                setTourOpen(true)
                             }} color={"secondary"} shadow>TRY IT OUT</Button>
                         </div>
                         <div className="mt-6 md:hidden w-full flex-col sm:flex-row sm:justify-start flex justify-center md:flex-row h-full gap-4">
@@ -165,10 +191,10 @@ const Landing = () => {
                             <FaArrowDown />
                         </div>
                         <div className='pt-12 w-full'>
-                            <form method="POST" onSubmit={handleFormSubmit}>
+                            <form ref={ref1} method="POST" onSubmit={handleFormSubmit}>
                                 <textarea maxLength={200} name="sentence" className='w-full drop-shadow-md p-4 font-[Inter] rounded-xl border-[1.2px] border-[#bdbdbd] resize-none' placeholder='Type something...' rows={5}></textarea>
                                 <div className="pt-2 flex w-full justify-center">
-                                    <Button disabled={submitBtnDisabled} type="submit" bordered color="primary" className="w-90 p-4">
+                                    <Button ref={ref2} disabled={submitBtnDisabled} type="submit" bordered color="primary" className="w-90 p-4">
                                         <div className="flex gap-2 items-center text-lg font-semibold">
                                             Rephrase
                                             <FaMagic />
@@ -183,6 +209,11 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
+            <Tour open={tourOpen} onClose={() => { setTourOpen(false) }} steps={TourSteps} indicatorsRender={(current, total) => (
+                <span>
+                    {current + 1} / {total}
+                </span>
+            )} />
             {contextHolder}
         </>
     )
