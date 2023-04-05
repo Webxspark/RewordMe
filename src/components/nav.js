@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import UserInfo from "./userInfo";
 import { LoginStatusContext } from "./LoginContext";
-import { Badge } from "@nextui-org/react";
 export default function Navbar() {
     const [MobileDrawerVisibility, setMobileDrawerVisibility] = useState("hidden");
     const { isLoggedIn, setLogoutSessionPrompt, userCredits } = useContext(LoginStatusContext);
