@@ -1,6 +1,6 @@
 import Pfp from "../assets/pfp.png";
 import { Modal, Checkbox, Button } from "@nextui-org/react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { message } from "antd";
 import { LoginStatusContext } from "./LoginContext";
 
@@ -10,7 +10,7 @@ const UserInfo = () => {
     const [Modalvisible, setModalVisible] = useState(false);
     const [signupForm, setSignupForm] = useState(false);
     const [messageApi, __contextHolder] = message.useMessage();
-    const { setIsLoggedIn } = useContext(LoginStatusContext);
+    const { setIsLoggedIn, logoutSessionPrompt, setLogoutSessionPrompt, userCredits } = useContext(LoginStatusContext);
     if (loginDetails) {
         setIsLoggedIn(true);
     } else {
@@ -112,18 +112,26 @@ const UserInfo = () => {
 
     }
     function logout() {
-        localStorage.removeItem('auth');
-        setLoginDetails(null);
-        //send request to server to logout
-        fetch("https://ai.webxspark.com/api/reword-me/userAuth", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `logout=true`
-        })
-        setIsLoggedIn(false)
+        if (logoutSessionPrompt) {
+            localStorage.removeItem('auth');
+            setLoginDetails(null);
+            //send request to server to logout
+            fetch("https://ai.webxspark.com/api/reword-me/userAuth", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `logout=true`
+            })
+            setIsLoggedIn(false)
+        }
     }
+    useEffect(()=>{
+        if (logoutSessionPrompt) {
+            logout();
+            setLogoutSessionPrompt(false);
+        }
+    }, [logoutSessionPrompt]);
     //return the user info if logged in or Login button if not
     return (
         <>
@@ -134,7 +142,8 @@ const UserInfo = () => {
                     </a>
                     <span className="md:flex flex-col hidden">
                         <span className="font-semibold md:text-sm lg:text-base pt-2">{loginDetails.username}</span>
-                        <div onClick={logout} ><p className="text-blue-700 text-sm cursor-pointer" id="logout">Logout</p></div>
+                        <div onClick={logout} ><p className="text-blue-700 text-sm cursor-pointer hidden" id="logout">Logout</p></div>
+                        <div ><p className="text-blue-700 text-sm cursor-pointer">{userCredits ? <>Credits: {userCredits}</>:<></>}</p></div>
                     </span>
                 </>
             ) : (

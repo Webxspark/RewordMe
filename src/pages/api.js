@@ -1,7 +1,10 @@
 import { Fragment } from "react";
 import Linkify from "../components/Linkify";
+import {useLoadingContext} from "react-router-loading"
 
 const ApiInfo = () => {
+    const Loading = useLoadingContext();
+    Loading.done()
     const columns = [
         {
             key: "info",

@@ -1,8 +1,11 @@
 import {message } from "antd";
 import { useState } from "react";
 import { Button } from "@nextui-org/react";
+import {useLoadingContext} from "react-router-loading"
 
 const ContactUs = () => {
+    const Loading = useLoadingContext();
+    Loading.done()
     const [BtnLoadingState, setBtnLoadingState] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
     const handleFormSubmission = (e) => {

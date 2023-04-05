@@ -2,15 +2,58 @@ import { Button } from "@nextui-org/react";
 import { FaArrowDown, FaMagic } from "react-icons/fa";
 import ResponseCard from "../components/responseCards";
 import SkeletonResponseCard from "../components/skeleton-responseCard";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import { LoginStatusContext } from "../components/LoginContext";
+import { useLoadingContext } from "react-router-loading"
 
 const Landing = () => {
+    const Loading = useLoadingContext();
+    Loading.done()
     const [messageApi, contextHolder] = message.useMessage();
     const [result, setResult] = useState('');
     const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
-    const { isLoggedIn } = useContext(LoginStatusContext);
+    const { isLoggedIn, userCredits, setUserCredits } = useContext(LoginStatusContext);
+    function WordCount(str) {
+        return str.split(' ')
+            .filter(function (n) { return n != '' })
+            .length;
+    }
+    useEffect(() => {
+        if (isLoggedIn) {
+            if (!userCredits) {
+                if (localStorage.auth) {
+                    const url = 'https://ai.webxspark.com/api/reword-me/mycredits';
+                    const formData = new URLSearchParams();
+                    formData.append('key', JSON.parse(localStorage.auth).key);
+
+                    fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                messageApi.error(data.error, 5);
+                            }
+                            if (data.context) {
+                                var ndata = data.context.content;
+                                setUserCredits(ndata.credits);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error)
+                            messageApi.error("Something went wrong while fetching your credits! Plese try again later.");
+                        });
+                }
+            }
+        } else {
+            setUserCredits(false);
+        }
+    }, [isLoggedIn]);
     function handleFormSubmit(e) {
         e.preventDefault();
         const data = new FormData(e.target);
@@ -23,6 +66,10 @@ const Landing = () => {
         }
         if (sentence.length > 200) {
             messageApi.error("Please enter a sentence with less than 200 characters!");
+            return;
+        }
+        if (WordCount(sentence) < 3) {
+            messageApi.error("Your sentence must contain a minimum of three words!");
             return;
         }
         setResult(<SkeletonResponseCard />);
@@ -75,6 +122,7 @@ const Landing = () => {
                     }
                 }
                 setSubmitBtnDisabled(false);
+                setUserCredits(userCredits - 1);
             })
             .catch(error => {
                 console.error(error)

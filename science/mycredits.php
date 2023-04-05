@@ -20,7 +20,7 @@ if(isset($_REQUEST['key'])){
             ]
         ];  
         } else {
-            $data['error'] = "Access denied!";
+            $data['error'] = "Access denied to fetch the credit balance of this user!";
         }
         
     } else {
