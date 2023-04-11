@@ -58,7 +58,7 @@ if ($_REQUEST) {
                         $curl = curl_init();
 
                         curl_setopt_array($curl, array(
-                            CURLOPT_URL => "https://apis.webxspark.com/v2.0/text/rephrase",
+                            CURLOPT_URL => "https://example.com/",
                             CURLOPT_RETURNTRANSFER => true,
                             CURLOPT_ENCODING => "",
                             CURLOPT_MAXREDIRS => 10,
